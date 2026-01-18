@@ -44,7 +44,7 @@
                     <execution>
                         <id>attach-sources</id>
                         <goals>
-                            <goal>jar-no-fork</goal>
+                            <goal>jar</goal>
                         </goals>
                     </execution>
                 </executions>
@@ -54,6 +54,9 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>3.5.0</version>
+                <configuration>
+                    <doclint>none</doclint>
+                </configuration>
                 <executions>
                     <execution>
                         <id>attach-javadocs</id>
@@ -72,7 +75,9 @@
                     <execution>
                         <id>sign-artifacts</id>
                         <phase>verify</phase>
-                        <goals><goal>sign</goal></goals>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
                     </execution>
                 </executions>
             </plugin>
@@ -83,7 +88,7 @@
                 <version>1.6.13</version>
                 <extensions>true</extensions>
                 <configuration>
-                    <serverId>ossrh</serverId>
+                    <serverId>kemonSdkPayCentral</serverId>
                     <nexusUrl>https://oss.sonatype.org/</nexusUrl>
                     <!-- 设为true可免去登录网站手动Release的步骤 -->
                     <autoReleaseAfterClose>true</autoReleaseAfterClose>
@@ -105,9 +110,9 @@
         </developer>
     </developers>
     <scm>
-        <connection>scm:git:git://github.com/yourusername/your-repo.git</connection>
-        <developerConnection>scm:git:ssh://github.com:yourusername/your-repo.git</developerConnection>
-        <url>https://github.com/yourusername/your-repo</url>
+        <connection>scm:git:git://github.com/KemonManager/kemon-sdk-pay.git</connection>
+        <developerConnection>scm:git:ssh://github.com:KemonManager/kemon-sdk-pay.git</developerConnection>
+        <url>https://github.com/KemonManager/kemon-sdk-pay</url>
     </scm>
 
     <distributionManagement>
@@ -120,4 +125,23 @@
             <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
         </repository>
     </distributionManagement>
+
+    <profiles>
+        <profile>
+            <id>release</id>
+            <build>
+                <plugins>
+                    <!-- 在发布时跳过测试（可选） -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <version>3.0.0-M9</version>
+                        <configuration>
+                            <skipTests>false</skipTests>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>
